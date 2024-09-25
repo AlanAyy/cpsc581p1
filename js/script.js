@@ -81,10 +81,6 @@ turnPageBtn.addEventListener('click', () => {
             // Highlight choice
             leftPage.classList.add('highlight');
             rightPage.classList.add('highlight');
-
-            // // Display arrow pointing to left page
-            // arrow.classList.remove('hidden');
-            // arrow.classList.add('left');
         }
     }
 });
