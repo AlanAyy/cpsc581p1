@@ -1,9 +1,24 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <title>CPSC 581 Example 1</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.js"></script>
-  </head>
-  <body>
-  </body>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Book Reader</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body>
+  <div class="book-container">
+    <div class="book">
+      <div id="left-page" class="page"></div>
+      <div id="right-page" class="page"></div>
+    </div>
+    <button id="turn-page-btn" class="button">Turn Page</button>
+    <button id="choice-btn" class="button choice-btn">Make Choice</button>
+    <div id="arrow" class="arrow hidden">⬆️</div>
+  </div>
+  <script src="js/script.js"></script>
+</body>
+
 </html>
