@@ -10,15 +10,17 @@
 </head>
 <body>
     <div class="book-container">
-        <div class="book">
+        <div class="book" onclick="flipRightPage()" ondblclick="moveLeftPage()">
+            <div class="cover"></div> 
+            <div class="empty-page"></div> 
             <div id="left-page" class="page"></div>
-            <div id="right-page" class="page"></div>
+            <div class="empty-page"></div> 
+            <div id="right-page" class="page"></div> 
+            <div class="empty-page"></div>
         </div>
-        <div id="compass" class="compass">
+        <div id="compass" class="compass" onclick="nextScenario()" ondblclick="chooseOption()">
             <div class="main-arrow"></div>
-        </div>
-        <button id="turn-page-btn">Turn Page</button>
+        </div>        
     </div>
-    
 </body>
 </html>
