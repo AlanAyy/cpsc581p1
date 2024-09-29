@@ -113,12 +113,69 @@ turnPageBtn.addEventListener('click', () => {
     }
 });
 
+
+// Function to display the current page
+function displayPage(page) {
+    if (page) {
+        leftPage.innerText = page.leftText;
+        rightPage.innerText = page.rightText;
+    }
+}
+
+function resetHighlights() {
+    leftPage.classList.remove('highlight');
+    rightPage.classList.remove('highlight');
+    compass.classList.remove('highlight');
+    arrow.classList.add('hidden');
+}
+
+// Turn the page (if not making a choice)
+turnPageBtn.addEventListener('click', () => {
+    if (currentPage.nextPage) {
+        // Start the animation
+        rightPage.classList.add('flipped');
+
+        setTimeout(() => {
+            // Remove the animation class after the animation completes
+            rightPage.classList.remove('flipped');
+
+            // Move to the next page and display it
+            currentPage = currentPage.nextPage;
+            displayPage(currentPage);
+
+            // Handle decision page logic
+            if (currentPage instanceof DecisionPage) {
+                turnPageBtn.classList.add('disabled');  // Disable "Turn Page" button
+                compass.classList.add('highlight');  // Highlight compass
+
+                // Highlight choice
+                leftPage.classList.add('highlight');
+                rightPage.classList.add('highlight');
+            }
+        }, 1000); // Duration of the animation (matches CSS transition duration)
+    }
+});
+
 let selectedOption = 0;
 
 // Handle compass clicks
 compass.addEventListener('click', () => {
     selectedOption = (selectedOption + 1) % 4;
-    let angle = selectedOption * 90 - 45; // Adjust angle for NW, NE, SE, SW
+    let angle;
+    switch (selectedOption) {
+        case 0:
+            angle = 45; // NW
+            break;
+        case 1:
+            angle = 135; // NE
+            break;
+        case 2:
+            angle = 225; // SE
+            break;
+        case 3:
+            angle = 315; // SW
+            break;
+    }
     arrow.style.transform = `translateY(-50%) rotate(${angle}deg)`;
 });
 
@@ -140,6 +197,17 @@ compass.addEventListener('dblclick', () => {
         }
     }
 });
+
+function makeChoice(choice) {
+    currentPage = currentPage[choice];  // Go to selected option
+    displayPage(currentPage);
+    resetHighlights();
+
+    turnPageBtn.classList.remove('disabled');
+}
+
+// Display the initial page
+displayPage(currentPage);
 
 function makeChoice(choice) {
     currentPage = currentPage[choice];  // Go to selected option
