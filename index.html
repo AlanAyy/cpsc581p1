@@ -6,17 +6,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Book Reader</title>
     <link rel="stylesheet" href="css/styles.css">
+    <script src="js/script.js" defer></script>
 </head>
 <body>
     <div class="book-container">
         <div class="book">
-            <div id="left-page" class="page">Left Page Content</div>
-            <div id="right-page" class="page">Right Page Content</div>
+            <div class="cover">
+                <div id="left-page" class="page">Left Page Contents</div>
+                <div id="right-page" class="page">Right Page Contents</div>
+                <div class="compass" id="compass">
+                    <div class="main-arrow"></div>
+                </div>
+            </div>
         </div>
-        <button id="turn-page-btn" class="button">Continue</button>
-        <button id="choice-btn" class="button hidden">Make Choice</button>
-        <div id="arrow" class="arrow hidden">⬆️</div>
+        <button id="turn-page-btn" class="button">Turn Page</button>
     </div>
-    <script src="js/script.js"></script>
 </body>
 </html>

@@ -7,14 +7,15 @@ class Page {
 }
 
 class DecisionPage extends Page {
-    constructor(leftText, rightText, leftPage, rightPage) {
+    constructor(leftText, rightText, option1, option2, option3, option4) {
         super(leftText, rightText);
-        this.leftPage = leftPage;
-        this.rightPage = rightPage;
+        this.option1 = option1;
+        this.option2 = option2;
+        this.option3 = option3;
+        this.option4 = option4;
     }
 }
-
-// Create pages
+// Create pages (same as provided)
 const pages = [
     new Page("In the small town of Kalgri, there lived a brave warrior named Mars. He wasn't the strongest, nor the smartest, but he possessed...", "A heart of gold, incorruptible by evil. \nA spirit of courage, rallying friends by his side."),
     new DecisionPage("Choose a quality:", "A heart of gold, incorruptible by evil.", "A spirit of courage, rallying friends by his side."),
@@ -60,7 +61,6 @@ pages[15].nextPage = pages[16];
 pages[16].nextPage = pages[17];
 pages[17].nextPage = pages[18];
 pages[18].nextPage = pages[19];
-
 // Start at the first page
 let currentPage = pages[0];
 
@@ -68,8 +68,8 @@ let currentPage = pages[0];
 const leftPage = document.getElementById('left-page');
 const rightPage = document.getElementById('right-page');
 const turnPageBtn = document.getElementById('turn-page-btn');
-const choiceBtn = document.getElementById('choice-btn');
-const arrow = document.getElementById('arrow');
+const compass = document.getElementById('compass');
+const arrow = document.querySelector('.main-arrow');
 
 // Function to display the current page
 function displayPage(page) {
@@ -82,7 +82,7 @@ function displayPage(page) {
 function resetHighlights() {
     leftPage.classList.remove('highlight');
     rightPage.classList.remove('highlight');
-    choiceBtn.classList.remove('highlight');
+    compass.classList.remove('highlight');
     arrow.classList.add('hidden');
 }
 
@@ -103,7 +103,7 @@ turnPageBtn.addEventListener('click', () => {
             // Handle decision page logic
             if (currentPage instanceof DecisionPage) {
                 turnPageBtn.classList.add('disabled');  // Disable "Turn Page" button
-                choiceBtn.classList.add('highlight');  // Highlight "Make Choice" button
+                compass.classList.add('highlight');  // Highlight compass
 
                 // Highlight choice
                 leftPage.classList.add('highlight');
@@ -113,45 +113,36 @@ turnPageBtn.addEventListener('click', () => {
     }
 });
 
-// Handle choice button
-choiceBtn.addEventListener('click', () => {
+let selectedOption = 0;
+
+// Handle compass clicks
+compass.addEventListener('click', () => {
+    selectedOption = (selectedOption + 1) % 4;
+    let angle = selectedOption * 90 - 45; // Adjust angle for NW, NE, SE, SW
+    arrow.style.transform = `translateY(-50%) rotate(${angle}deg)`;
+});
+
+compass.addEventListener('dblclick', () => {
     if (currentPage instanceof DecisionPage) {
-        if (selectedPage === '') {
-            arrow.classList.remove('hidden');
+        switch (selectedOption) {
+            case 0:
+                makeChoice('option1'); // NW
+                break;
+            case 1:
+                makeChoice('option2'); // NE
+                break;
+            case 2:
+                makeChoice('option3'); // SE
+                break;
+            case 3:
+                makeChoice('option4'); // SW
+                break;
         }
-
-        if (selectedPage === 'left') {
-            selectedPage = 'right';
-            arrow.classList.remove('left');
-            arrow.classList.add('right');
-        } else {
-            selectedPage = 'left';
-            arrow.classList.remove('right');
-            arrow.classList.add('left');
-        }
-    }
-});
-
-// Confirm the choice when clicking the selected page
-leftPage.addEventListener('click', () => {
-    if (selectedPage === 'left') {
-        makeChoice('left');
-    }
-});
-
-rightPage.addEventListener('click', () => {
-    if (selectedPage === 'right') {
-        makeChoice('right');
     }
 });
 
 function makeChoice(choice) {
-    if (choice === 'left') {
-        currentPage = currentPage.leftPage;  // Go left
-    } else {
-        currentPage = currentPage.rightPage;  // Go right
-    }
-
+    currentPage = currentPage[choice];  // Go to selected option
     displayPage(currentPage);
     resetHighlights();
 
