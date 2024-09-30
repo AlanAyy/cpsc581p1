@@ -1,99 +1,116 @@
+body {
+    display: flex;
+    justify-content: center; /* Centering horizontally */
+    align-items: center; /* Centering vertically */
+    height: 100vh; /* Full viewport height */
+    background-color: #f4f1ea; /* Background color */
+    margin: 0; /* Remove default margin */
+    font-family: 'Times New Roman', Times, serif; /* Font style */
+}
+
 .book-container {
-    position: relative;
+    position: relative; /* Needed for absolute positioning of background */
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: center; /* Center items inside the container */
 }
 
 .book-background {
     position: absolute;
     top: 0;
     left: 0;
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
-    object-fit: cover;
-    background-position: center;
-    z-index: -1;
+    width: 100%; /* Cover full width */
+    height: 100%; /* Cover full height */
+    overflow: hidden; /* Prevent overflow */
+    background-position: center; /* Center the background */
+    background-size: cover; /* Make sure the background covers the area */
+    z-index: -1; /* Ensure it stays behind other elements */
 }
 
 .book {
     display: flex; 
-    width: 600px; 
-    height: 400px; 
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-    background: #f9f6f1;
-    padding: 20px;
-    grid-gap: 10px; 
-    cursor: pointer;
+    flex-direction: column; /* Stack contents vertically */
+    width: 600px; /* Fixed width for the book */
+    height: 400px; /* Fixed height for the book */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3); /* Box shadow for depth */
+    background: #f9f6f1; /* Background color for the book */
+    padding: 20px; /* Inner spacing */
+    cursor: pointer; /* Change cursor on hover */
 }
 
+/* Styles for content boxes (for side-by-side content) */
 .content-left, .content-right {
-    flex: 1; 
-    padding: 10px; 
-    border: 1px solid #ddd; 
-    background-color: #fff; 
-    margin: 5px; 
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); 
+    flex: 1; /* Allow equal space for each */
+    padding: 10px; /* Space inside the boxes */
+    border: 1px solid #ddd; /* Border for the boxes */
+    background-color: #fff; /* Background for the boxes */
+    margin: 5px; /* Margin between the boxes */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Optional shadow for depth */
 }
 
+/* Styles for choice boxes */
 .choice-box {
-    border: 1px solid #ddd;
-    background-color: #fff;
-    padding: 10px;
-    transition: background-color 0.3s ease;
-    text-align: justify;
+    border: 1px solid #ddd; /* Border for choice boxes */
+    background-color: #fff; /* Background color for choice boxes */
+    padding: 10px; /* Inner spacing for choice boxes */
+    transition: background-color 0.3s ease; /* Transition for background color */
+    text-align: justify; /* Justify text */
 }
 
 .choice-box.highlight {
-    background-color: #d6c7a8;
-    border: 2px solid #a6957b;
+    background-color: #d6c7a8; /* Highlight color */
+    border: 2px solid #a6957b; /* Border color when highlighted */
 }
 
 .hidden {
-    display: none;
+    display: none; /* Hide elements */
 }
 
 #choice-btn {
-    margin-top: 10px;
+    margin-top: 10px; /* Spacing above the choice button */
 }
 
+/* Styles for buttons */
 .button {
-    padding: 10px 20px;
-    font-size: 16px;
-    cursor: pointer;
-    background-color: #e0d8c3;
-    border: none;
-    transition: background-color 0.3s ease;
+    padding: 10px 20px; /* Padding for buttons */
+    font-size: 16px; /* Font size for buttons */
+    cursor: pointer; /* Change cursor on hover */
+    background-color: #e0d8c3; /* Background color for buttons */
+    border: none; /* No border */
+    transition: background-color 0.3s ease; /* Transition for background color */
 }
 
 .button.highlight {
-    background-color: #d6c7a8;
-    font-weight: bold;
-    border: 2px solid #a6957b;
+    background-color: #d6c7a8; /* Highlight color for buttons */
+    font-weight: bold; /* Bold text for highlighted buttons */
+    border: 2px solid #a6957b; /* Border color for highlighted buttons */
 }
 
-
+/* Dynamic grid sizes based on number of choices */
 .grid-2 {
-    grid-template-columns: 1fr 1fr;
+    display: flex; /* Flex layout for 2 choices */
+    justify-content: space-between; /* Space between the boxes */
 }
 
 .grid-3 {
-    grid-template-rows: 1fr 1fr;
-    grid-template-columns: 1fr 1fr;
+    display: grid; /* Grid layout for 3 choices */
+    grid-template-columns: repeat(3, 1fr); /* 3 equal columns */
+    gap: 10px; /* Space between grid items */
 }
 
 .grid-4 {
-    grid-template-columns: 1fr 1fr;
-    grid-template-rows: 1fr 1fr;
+    display: grid; /* Grid layout for 4 choices */
+    grid-template-columns: repeat(2, 1fr); /* 2 columns for 4 items */
+    grid-template-rows: repeat(2, 1fr); /* 2 rows for 4 items */
+    gap: 10px; /* Space between grid items */
 }
 
 button {
-    display: block;
-    margin-top: 10px; 
+    display: block; /* Ensure buttons can show */
+    margin-top: 10px; /* Space above buttons */
 }
 
 button[disabled] {
-    background-color: #ccc; 
-    cursor: not-allowed; 
+    background-color: #ccc; /* Style for disabled button */
+    cursor: not-allowed; /* Change cursor to indicate it's not clickable */
 }

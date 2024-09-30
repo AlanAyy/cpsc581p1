@@ -755,11 +755,33 @@ nextPageBtn.addEventListener('click', () => {
     }
 });
 
+// Define a mapping of choices to background images
+const backgroundImages = {
+    0: 'url("images/bgForest.jpg)', // Background for choice 1
+    1: 'url("images/bgForest.jpg)', // Background for choice 2
+    2: 'url("images/bgDock.jpg")', // Background for choice 3
+    3: 'url("images/bgRiver.jpg")', // Background for choice 4
+};
+
+function setBackground(choiceIndex) {
+    console.log("Changing background to choice index:", choiceIndex); // Debugging log
+    const backgroundImage = backgroundImages[choiceIndex];
+    if (backgroundImage) {
+        document.querySelector('.book-background').style.backgroundImage = backgroundImage;
+        console.log("Background set to:", backgroundImage); // Log the background being set
+    } else {
+        console.log("No background image found for this choice."); // Log if no background is found
+    }
+}
+
+
 // Make the choice and move to the next page
 function makeChoice(choiceIndex) {
     currentPage = currentPage.nextPages[choiceIndex];  // Move to the selected page
     displayPage(currentPage);
     resetHighlights();
+
+    setBackground(choiceIndex);
 }
 
 // Display the initial page
