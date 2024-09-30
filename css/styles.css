@@ -21,31 +21,31 @@ body {
 }
 
 .book {
-    display: flex;
+    display: grid;
     width: 600px;
     height: 400px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
     background: #f9f6f1;
-    position: relative;
+    padding: 20px;
+    grid-gap: 10px;
+    cursor: pointer;
 }
 
-.page {
-    flex: 1;
-    padding: 20px;
+.choice-box {
     border: 1px solid #ddd;
     background-color: #fff;
-    text-align: justify;
-    position: relative;
+    padding: 20px;
     transition: background-color 0.3s ease;
+    text-align: justify;
 }
 
-.page.highlight {
+.choice-box.highlight {
     background-color: #f5ebd7;
     border: 2px solid #d6c7a8;
 }
 
-#turn-page-btn {
-    margin-top: 20px;
+.hidden {
+    display: none;
 }
 
 #choice-btn {
@@ -61,11 +61,6 @@ body {
     transition: background-color 0.3s ease;
 }
 
-.button.disabled {
-    background-color: #c9c1ae;
-    cursor: not-allowed;
-}
-
 .button.highlight {
     background-color: #d6c7a8;
     font-weight: bold;
@@ -74,21 +69,22 @@ body {
 
 .arrow {
     position: absolute;
-    top: 80px;
-    left: 50%;
-    transform: translateX(-50%);
     font-size: 24px;
     color: #a6957b;
+    transition: top 0.3s ease, left 0.3s ease;
 }
 
-.arrow.left {
-    left: 20%;
+/* Dynamic grid sizes based on number of choices */
+.grid-2 {
+    grid-template-columns: 1fr 1fr;
 }
 
-.arrow.right {
-    left: 80%;
+.grid-3 {
+    grid-template-rows: 1fr 1fr;
+    grid-template-columns: 1fr 1fr;
 }
 
-.hidden {
-    display: none;
+.grid-4 {
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
 }
