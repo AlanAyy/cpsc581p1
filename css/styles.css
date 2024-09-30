@@ -1,18 +1,3 @@
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-body {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    background-color: #f4f1ea;
-    font-family: 'Times New Roman', Times, serif;
-}
-
 .book-container {
     position: relative;
     display: flex;
@@ -21,20 +6,29 @@ body {
 }
 
 .book {
-    display: grid;
-    width: 600px;
-    height: 400px;
+    display: flex; 
+    width: 600px; 
+    height: 400px; 
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
     background: #f9f6f1;
     padding: 20px;
-    grid-gap: 10px;
+    grid-gap: 10px; 
     cursor: pointer;
+}
+
+.content-left, .content-right {
+    flex: 1; 
+    padding: 10px; 
+    border: 1px solid #ddd; 
+    background-color: #fff; 
+    margin: 5px; 
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); 
 }
 
 .choice-box {
     border: 1px solid #ddd;
     background-color: #fff;
-    padding: 20px;
+    padding: 10px;
     transition: background-color 0.3s ease;
     text-align: justify;
 }
@@ -67,7 +61,7 @@ body {
     border: 2px solid #a6957b;
 }
 
-/* Dynamic grid sizes based on number of choices */
+
 .grid-2 {
     grid-template-columns: 1fr 1fr;
 }
@@ -80,4 +74,14 @@ body {
 .grid-4 {
     grid-template-columns: 1fr 1fr;
     grid-template-rows: 1fr 1fr;
+}
+
+button {
+    display: block;
+    margin-top: 10px; 
+}
+
+button[disabled] {
+    background-color: #ccc; 
+    cursor: not-allowed; 
 }
