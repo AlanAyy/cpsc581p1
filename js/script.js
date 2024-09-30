@@ -635,12 +635,28 @@ pages[85].nextPage = pages[86];
 pages[86].nextPage = pages[20];
 pages[87].nextPage = pages[81];
 
+// Location pages
+const beachPages = [pages[0], pages[1], pages[2], pages[3], pages[6]];
+const forestPages = [pages[4], pages[11], pages[15], pages[31], pages[39], pages[41]];
+const bearEncounterPages = [pages[8], pages[9], pages[10], pages[12], pages[13], pages[14], pages[82]];
+const cavePages = [pages[17], pages[20], pages[29], pages[40], pages[83]];
+const dwarvenPages = [pages[42]];
+const townPages = [pages[33], pages[34], pages[35], pages[36], pages[49], pages[50]];
+const harborPages = [];
+const innPages = [pages[59], pages[60]];
+const marketPages = [pages[55], pages[56], pages[57], pages[58], pages[65], pages[69]];
+const industrialPages = [pages[80], pages[81]];
+const gameOverPages = [pages[19], pages[77], pages[78], pages[79], pages[84]];
+const unknownPages = [pages[5], pages[7], pages[16], pages[18], pages[21], pages[22], pages[23], pages[24], pages[25], pages[26], pages[27], pages[28], pages[30], pages[32], pages[37], pages[38], pages[44], pages[45], pages[46], pages[47], pages[48], pages[51], pages[52], pages[53], pages[54], pages[61], pages[62], pages[63], pages[64], pages[66], pages[67], pages[68], pages[70], pages[71], pages[72], pages[73], pages[74], pages[75], pages[76]];
+
 let currentPage = pages[0];
+let currentBackgroundImg = '';
 let selectedChoiceIndex = 0;  
 
 const bookContainer = document.getElementById('book');
 const nextPageBtn = document.getElementById('next-page-btn'); // "Next Page" button
 const choiceBtn = document.getElementById('choice-btn'); // "Make Choice" button
+const bookBackground = document.querySelector('.book-background'); // Background image
 
 function generateChoiceBoxes(numChoices) {
     bookContainer.innerHTML = '';
@@ -704,6 +720,30 @@ function displayPage(page) {
 
         highlightDecisionState(numChoices);
     }
+    // Change background if location changes
+    changeBackground(page);
+}
+
+function changeBackground(page) {
+    if (beachPages.includes(page)) {
+        setBackground('images/bgBeach.jpg');
+    } else if (forestPages.includes(page) || bearEncounterPages.includes(page)) {
+        setBackground('images/bgForest.jpg');
+    } else if (cavePages.includes(page) || dwarvenPages.includes(page)) {
+        setBackground('images/bgCave.jpg');
+    } else if (townPages.includes(page) || harborPages.includes(page)) {
+        setBackground('images/bgTown.jpg');
+    } else if (innPages.includes(page)) {
+        setBackground('images/bgInn.jpg');
+    } else if (marketPages.includes(page)) {
+        setBackground('images/bgMarket.jpg');
+    } else if (industrialPages.includes(page)) {
+        setBackground('images/bgIndustrial.jpg');
+    } else if (gameOverPages.includes(page)) {
+        setBackground('images/bgWood.jpg');
+    } else {
+        setBackground('images/bgUnknown.jpg');
+    }
 }
 
 function highlightDecisionState(numChoices) {
@@ -753,25 +793,17 @@ nextPageBtn.addEventListener('click', () => {
         currentPage = currentPage.nextPage;
         displayPage(currentPage);
     }
+    // Change the background
+    setBackground('images/bgBeach.jpg');
 });
 
-// Define a mapping of choices to background images
-const backgroundImages = {
-    0: 'url("images/bgForest.jpg)', // Background for choice 1
-    1: 'url("images/bgForest.jpg)', // Background for choice 2
-    2: 'url("images/bgDock.jpg")', // Background for choice 3
-    3: 'url("images/bgRiver.jpg")', // Background for choice 4
-};
-
-function setBackground(choiceIndex) {
-    console.log("Changing background to choice index:", choiceIndex); // Debugging log
-    const backgroundImage = backgroundImages[choiceIndex];
-    if (backgroundImage) {
-        document.querySelector('.book-background').style.backgroundImage = backgroundImage;
-        console.log("Background set to:", backgroundImage); // Log the background being set
-    } else {
-        console.log("No background image found for this choice."); // Log if no background is found
+function setBackground(imageUrl) {
+    // TODO: Fancy effects
+    if (imageUrl === currentBackgroundImg) {
+        return;
     }
+    bookBackground.src = imageUrl;
+    currentBackgroundImg = imageUrl;
 }
 
 
@@ -780,8 +812,6 @@ function makeChoice(choiceIndex) {
     currentPage = currentPage.nextPages[choiceIndex];  // Move to the selected page
     displayPage(currentPage);
     resetHighlights();
-
-    setBackground(choiceIndex);
 }
 
 // Display the initial page
