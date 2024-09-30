@@ -1,135 +1,155 @@
+// Define the structure of the story using a linked list
 class Page {
-    constructor(leftText, rightText) {
-        this.leftText = leftText;
-        this.rightText = rightText;
-        this.nextPage = null;
-        this.prevPage = null; // Track the previous page
+    constructor(texts = [], nextPage = null) {
+        this.texts = texts; // Array of text for each div
+        this.nextPage = nextPage;
     }
 }
 
-class DecisionPage extends Page {
-    constructor(leftText, rightText, option1, option2, option3, option4) {
-        super(leftText, rightText);
-        this.option1 = option1;
-        this.option2 = option2;
-        this.option3 = option3;
-        this.option4 = option4;
+class DecisionPage {
+    constructor(pageTexts = [], nextPages = []) {
+        this.pageTexts = pageTexts; // Array of choices text
+        this.nextPages = nextPages; // Array of next pages corresponding to each choice
     }
 }
 
 // Create pages
 const pages = [
-    new Page("In the small town of Kalgri, there lived a brave warrior named Mars...", "A heart of gold..."),
-    new Page("Mars was known for his unwavering kindness...", "His courage was infectious..."),
-    new Page("Those who tried to harm the villagers were met by Mars...", "Bards traveled across the land..."),
-    new Page("As he looks out into the night sky...", "As he closes his eyes..."),
-    new Page("As he opens his book of monsters...", "He rushes out of bed...")
+    new Page(["Once upon a time, in a land far away...", "There was a brave knight on a quest."]),
+    new Page(["He ventured into the forest to find a lost artifact.", "The trees were dense, and the air was cold."]),
+    new DecisionPage(["He chose the left path.", "He chose the right path.", "He climbed the mountain.", "He crossed the river."]),
+    new Page(["He chose the left path.", "It passes by a hidden cave."]),
+    new Page(["He chose the right path.", "It passes by a dark forest."]),
+    new Page(["He climbed the mountain.", "The view from the top was breathtaking."]),
+    new Page(["All paths converged at a river.", "The knight faced many challenges and crossed safely."]),
+    new Page(["The knight reached his destination.", "But the journey was far from over..."]),
 ];
 
-// Connect pages
-for (let i = 0; i < pages.length; i++) {
-    if (i < pages.length - 1) {
-        pages[i].nextPage = pages[i + 1]; // Connect next page
-        pages[i + 1].prevPage = pages[i]; // Connect previous page
-    }
-}
+// Set up the linked list with choices
+pages[0].nextPage = pages[1];
+pages[1].nextPage = pages[2];
+pages[2].nextPages = [pages[3], pages[4], pages[5], pages[7]];
+pages[3].nextPage = pages[6];  
+pages[4].nextPage = pages[6];  
+pages[5].nextPage = pages[6];  
+pages[6].nextPage = pages[7];  
 
-// Start at the first page
 let currentPage = pages[0];
+let selectedChoiceIndex = 0;  
 
-// DOM elements
-const leftPage = document.getElementById('left-page');
-const rightPage = document.getElementById('right-page');
-const compass = document.getElementById('compass');
-const arrow = document.querySelector('.main-arrow');
 
-// Function to display the current page
-function displayPage(page) {
-    if (page) {
-        leftPage.innerText = page.leftText;
-        rightPage.innerText = page.rightText;
-    }
-}
+const bookContainer = document.getElementById('book');
+const choiceBtn = document.getElementById('choice-btn');
 
-// Function to handle single click on the compass (next scenario)
-function nextScenario() {
-    console.log("Next scenario clicked!"); // Debugging line
-    const rightPageElement = document.getElementById("right-page");
 
-    // Check if there is a next page
-    if (currentPage.nextPage) {
-        rightPageElement.classList.toggle("flipped");
-
-        setTimeout(() => {
-            // Move to the next page and display it
-            currentPage = currentPage.nextPage;
-            displayPage(currentPage);
-
-            // Reset the right page's flipped state after displaying the new page
-            rightPageElement.classList.remove("flipped");
-        }, 500); // Duration of the animation
-    }
-}
-
-// Function to handle double click on the compass (choose option)
-function chooseOption() {
-    console.log("Choose option double-clicked!"); // Debugging line
-    // Implement your logic here
-}
-
-// Reset highlights (if needed)
-function resetHighlights() {
-    leftPage.classList.remove('highlight');
-    rightPage.classList.remove('highlight');
-    compass.classList.remove('highlight');
-    arrow.classList.add('hidden');
-}
-
-// Flip right page function
-function flipRightPage() {
-    const rightPageElement = document.getElementById("right-page");
-
-    // Flip the right page if there is a next page
-    if (currentPage.nextPage) {
-        rightPageElement.classList.toggle("flipped");
-
-        setTimeout(() => {
-            // Move to the next page and display it
-            currentPage = currentPage.nextPage;
-            displayPage(currentPage);
-
-            // Reset the right page's flipped state after displaying new page
-            rightPageElement.classList.remove("flipped");
-        }, 500); // Duration of the animation
-    }
-}
-
-let isMoving = false; 
-
-function moveLeftPage() {
-    if (isMoving) return; 
-
-    const leftPageElement = document.getElementById("left-page");
+function generateChoiceBoxes(numChoices) {
+    bookContainer.innerHTML = '';
     
-    if (currentPage.prevPage) {
-        console.log("Moving to previous page:", currentPage.prevPage.leftText); // Log the left text of the previous page
-        isMoving = true; 
-        leftPageElement.classList.add("flipped");
+    bookContainer.className = 'book';
+    if (numChoices === 2) {
+        bookContainer.classList.add('grid-2');
+    } else if (numChoices === 3) {
+        bookContainer.classList.add('grid-3');
+    } else if (numChoices === 4) {
+        bookContainer.classList.add('grid-4');
+    }
 
-        setTimeout(() => {
-            currentPage = currentPage.prevPage; 
-            displayPage(currentPage); 
-            leftPageElement.classList.remove("flipped");
-            isMoving = false; 
-        }, 500); 
-    } else {
-        console.log("No previous page to go back to."); 
+    for (let i = 0; i < numChoices; i++) {
+        const div = document.createElement('div');
+        div.classList.add('choice-box');
+        div.id = `choice-${i + 1}`;
+        bookContainer.appendChild(div);
     }
 }
 
-// Initialize and display the first page
-displayPage(currentPage);
 
-// Add event listeners for the compass
-compass.onclick = nextScenario; // Single click for next scenario
-compass.ondblclick = chooseOption; // Double click for choosing option
+function displayPage(page) {
+    resetHighlights();
+
+    if (page instanceof Page) {
+        generateChoiceBoxes(2);  // Regular pages have 2 choices (left and right)
+        document.getElementById('choice-1').innerText = page.texts[0];
+        document.getElementById('choice-2').innerText = page.texts[1];
+    } else if (page instanceof DecisionPage) {
+        const numChoices = page.pageTexts.length;
+        generateChoiceBoxes(numChoices);  // Dynamically generate choice boxes based on number of choices
+
+        // Display choices dynamically
+        page.pageTexts.forEach((text, index) => {
+            document.getElementById(`choice-${index + 1}`).innerText = text;
+        });
+
+        highlightDecisionState(numChoices);
+    }
+}
+
+function highlightDecisionState(numChoices) {
+    choiceBtn.classList.add('highlight'); 
+    highlightChoice(1); 
+}
+
+function resetHighlights() {
+    choiceBtn.classList.remove('highlight');
+    document.querySelectorAll('.choice-box').forEach(box => {
+        box.classList.remove('highlight');
+    });
+    selectedChoiceIndex = 0;  
+}
+
+
+function highlightChoice(choiceIndex) {
+    document.querySelectorAll('.choice-box').forEach(box => {
+        box.classList.remove('highlight');
+    });
+    document.getElementById(`choice-${choiceIndex}`).classList.add('highlight');
+}
+
+let clickTimeout = null;
+const DOUBLE_CLICK_DELAY = 300; 
+
+
+choiceBtn.addEventListener('click', () => {
+    if (currentPage instanceof DecisionPage) {
+        if (clickTimeout !== null) {
+            clearTimeout(clickTimeout);
+            clickTimeout = null;
+            makeChoice(selectedChoiceIndex);  
+        } else {
+            clickTimeout = setTimeout(() => {
+                clickTimeout = null;
+                const numChoices = currentPage.pageTexts.length;
+                selectedChoiceIndex = (selectedChoiceIndex + 1) % numChoices;  
+                highlightChoice(selectedChoiceIndex + 1);  
+            }, DOUBLE_CLICK_DELAY);
+        }
+    }
+});
+
+
+// Handle confirming the choice with double click
+choiceBtn.addEventListener('dblclick', () => {
+    if (currentPage instanceof DecisionPage) {
+        makeChoice(selectedChoiceIndex);  // Make the choice based on the selected box
+    }
+});
+
+
+// Confirm the choice by clicking anywhere on the book
+bookContainer.addEventListener('click', () => {
+    if (currentPage instanceof DecisionPage) {
+        makeChoice(selectedChoiceIndex);  // Make the choice based on the selected box
+    } else if (currentPage.nextPage) {
+        currentPage = currentPage.nextPage;
+        displayPage(currentPage);
+    }
+});
+
+// Make the choice and move to the next page
+function makeChoice(choiceIndex) {
+    currentPage = currentPage.nextPages[choiceIndex];  // Move to the selected page
+    displayPage(currentPage);
+    resetHighlights();
+}
+
+// Display the initial page
+displayPage(currentPage);

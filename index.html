@@ -2,25 +2,15 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Book Reader</title>
+    <title>Interactive Book Reader</title>
     <link rel="stylesheet" href="css/styles.css">
-    <script src="js/script.js" defer></script>
 </head>
 <body>
     <div class="book-container">
-        <div class="book" onclick="flipRightPage()" ondblclick="moveLeftPage()">
-            <div class="cover"></div> 
-            <div class="empty-page"></div> 
-            <div id="left-page" class="page"></div>
-            <div class="empty-page"></div> 
-            <div id="right-page" class="page"></div> 
-            <div class="empty-page"></div>
-        </div>
-        <div id="compass" class="compass" onclick="nextScenario()" ondblclick="chooseOption()">
-            <div class="main-arrow"></div>
-        </div>        
+        <div id="book" class="book"></div>
+        <button id="choice-btn" class="button choice-btn">Make Choice</button>
     </div>
+    <script src="js/script.js"></script>
 </body>
 </html>
