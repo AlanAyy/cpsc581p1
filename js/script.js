@@ -49,8 +49,7 @@ let selectedPage = '';
 
 // DOM elements
 const leftPage = document.getElementById('left-page');
-const rightPage = document.getElementById('right-page');
-const turnPageBtn = document.getElementById('turn-page-btn');
+const rightPage = document.getElementById('right-page'); 
 const choiceBtn = document.getElementById('choice-btn');
 const arrow = document.getElementById('arrow');
 
@@ -61,29 +60,43 @@ function displayPage(page) {
         rightPage.innerText = page.rightText;
     }
 }
+// Handle single and double clicks
+let clickTimer;
 
+leftPage.addEventListener('click', handlePageClick);
+rightPage.addEventListener('click', handlePageClick);
+
+function handlePageClick() {
+    if (clickTimer) {
+        clearTimeout(clickTimer); // If it was a double click, go back to the previous page
+        if (previousPage) {
+            currentPage = previousPage;
+            previousPage = null; // Reset previous page after going back
+            displayPage(currentPage);
+        }
+    } else {
+        // If it was a single click, store the current page as previous and go to the next
+        previousPage = currentPage; // Store current page to go back later
+        if (currentPage.nextPage) {
+            currentPage = currentPage.nextPage; // Move to next page
+            displayPage(currentPage);
+        }
+    }
+    
+    // Set a timer for the single click
+    clickTimer = setTimeout(() => {
+        clickTimer = null; // Reset the timer
+    }, 300); // Adjust the timeout as needed
+}
+
+// Display the initial page
+displayPage(currentPage);
 function resetHighlights() {
     leftPage.classList.remove('highlight');
     rightPage.classList.remove('highlight');
     choiceBtn.classList.remove('highlight');
     arrow.classList.add('hidden');
 }
-
-// Turn the page (if not making a choice)
-turnPageBtn.addEventListener('click', () => {
-    if (currentPage.nextPage) {
-        currentPage = currentPage.nextPage;  // Default to left if no choice
-        displayPage(currentPage);
-        if (currentPage instanceof DecisionPage) {
-            turnPageBtn.classList.add('disabled');  // Disable "Turn Page" button
-            choiceBtn.classList.add('highlight');  // Highlight "Make Choice" button
-
-            // Highlight choice
-            leftPage.classList.add('highlight');
-            rightPage.classList.add('highlight');
-        }
-    }
-});
 
 // Handle choice button
 choiceBtn.addEventListener('click', () => {
@@ -126,8 +139,6 @@ function makeChoice(choice) {
 
     displayPage(currentPage);
     resetHighlights();
-
-    turnPageBtn.classList.remove('disabled');
 }
 
 // Display the initial page
