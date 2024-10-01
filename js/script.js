@@ -637,17 +637,14 @@ pages[87].nextPage = pages[81];
 
 // Location pages
 const beachPages = [pages[0], pages[1], pages[2], pages[3], pages[6]];
-const forestPages = [pages[4], pages[11], pages[15], pages[31], pages[39], pages[41]];
-const bearEncounterPages = [pages[8], pages[9], pages[10], pages[12], pages[13], pages[14], pages[82]];
+const forestPages = [pages[4], pages[5], pages[7], pages[11], pages[15], pages[16], pages[18], pages[19], pages[21], pages[22], pages[23], pages[24], pages[25], pages[26], pages[27], pages[28], pages[30], pages[31], pages[39], pages[41], pages[86]];
+const bearPages = [pages[8], pages[9], pages[10], pages[12], pages[13], pages[14], pages[82], pages[85]];
+const riverPages = [pages[32], pages[33]];
+const harborPages = [pages[34], pages[35], pages[36], pages[37], pages[38]];
 const cavePages = [pages[17], pages[20], pages[29], pages[40], pages[83]];
-const dwarvenPages = [pages[42]];
-const townPages = [pages[33], pages[34], pages[35], pages[36], pages[49], pages[50]];
-const harborPages = [];
-const innPages = [pages[59], pages[60]];
-const marketPages = [pages[55], pages[56], pages[57], pages[58], pages[65], pages[69]];
-const industrialPages = [pages[80], pages[81]];
-const gameOverPages = [pages[19], pages[77], pages[78], pages[79], pages[84]];
-const unknownPages = [pages[5], pages[7], pages[16], pages[18], pages[21], pages[22], pages[23], pages[24], pages[25], pages[26], pages[27], pages[28], pages[30], pages[32], pages[37], pages[38], pages[44], pages[45], pages[46], pages[47], pages[48], pages[51], pages[52], pages[53], pages[54], pages[61], pages[62], pages[63], pages[64], pages[66], pages[67], pages[68], pages[70], pages[71], pages[72], pages[73], pages[74], pages[75], pages[76]];
+const townPages = [pages[42], pages[43], pages[44], pages[45], pages[46], pages[47], pages[48], pages[49], pages[50], pages[51], pages[52], pages[53], pages[54], pages[55], pages[56], pages[57], pages[58], pages[59], pages[60], pages[61], pages[62], pages[63], pages[64], pages[65], pages[66], pages[67], pages[68], pages[69], pages[70], pages[71], pages[72], pages[73], pages[74], pages[75], pages[84]];
+const mercenaryPages = [pages[76], pages[77], pages[78], pages[79]];
+const gameOverPages = [pages[80], pages[81], pages[87]];
 
 let currentPage = pages[0];
 let currentBackgroundImg = '';
@@ -727,22 +724,19 @@ function displayPage(page) {
 function changeBackground(page) {
     if (beachPages.includes(page)) {
         setBackground('images/bgBeach.jpg');
-    } else if (forestPages.includes(page) || bearEncounterPages.includes(page)) {
+    } else if (forestPages.includes(page) || bearPages.includes(page)) {
         setBackground('images/bgForest.jpg');
-    } else if (cavePages.includes(page) || dwarvenPages.includes(page)) {
+    } else if (cavePages.includes(page)) {
         setBackground('images/bgCave.jpg');
-    } else if (townPages.includes(page) || harborPages.includes(page)) {
-        setBackground('images/bgTown.jpg');
-    } else if (innPages.includes(page)) {
-        setBackground('images/bgInn.jpg');
-    } else if (marketPages.includes(page)) {
-        setBackground('images/bgMarket.jpg');
-    } else if (industrialPages.includes(page)) {
-        setBackground('images/bgIndustrial.jpg');
+    } else if (townPages.includes(page)) {
+        // setBackground('images/bgTown.jpg');
+        setBackground('images/bgCave.jpg');
+    } else if (harborPages.includes(page)) {
+        setBackground('images/bgDock.jpg');
+    } else if (riverPages.includes(page) || mercenaryPages.includes(page)) {
+        setBackground('images/bgRiver.jpg');
     } else if (gameOverPages.includes(page)) {
         setBackground('images/bgWood.jpg');
-    } else {
-        setBackground('images/bgUnknown.jpg');
     }
 }
 
@@ -793,15 +787,9 @@ nextPageBtn.addEventListener('click', () => {
         currentPage = currentPage.nextPage;
         displayPage(currentPage);
     }
-    // Change the background
-    setBackground('images/bgBeach.jpg');
 });
 
 function setBackground(imageUrl) {
-    // TODO: Fancy effects
-    if (imageUrl === currentBackgroundImg) {
-        return;
-    }
     bookBackground.src = imageUrl;
     currentBackgroundImg = imageUrl;
 }
