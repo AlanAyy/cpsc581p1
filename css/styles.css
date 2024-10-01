@@ -29,7 +29,7 @@ body {
 
 .book {
     display: flex; 
-    flex-direction: column; /* Stack contents vertically */
+    flex-direction: row; /* Stack contents vertically */
     width: 600px; /* Fixed width for the book */
     height: 400px; /* Fixed height for the book */
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3); /* Box shadow for depth */
