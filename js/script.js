@@ -658,7 +658,7 @@ const bookBackground = document.querySelector('.book-background'); // Background
 
 function generateChoiceBoxes(numChoices) {
     bookContainer.innerHTML = '';
-
+    
     bookContainer.className = 'book';
     if (numChoices === 2) {
         bookContainer.classList.add('grid-2');
@@ -676,42 +676,19 @@ function generateChoiceBoxes(numChoices) {
     }
 }
 
+
 function displayPage(page) {
     resetHighlights();
 
     if (page instanceof Page) {
-        // Check if the page has less than or equal to 2 texts
-        if (page.texts.length <= 2) {
-            // Display content side by side
-            bookContainer.innerHTML = '';
-            const leftDiv = document.createElement('div');
-            const rightDiv = document.createElement('div');
-            leftDiv.className = 'content-left';
-            rightDiv.className = 'content-right';
-            leftDiv.innerText = page.texts[0];
-            rightDiv.innerText = page.texts[1] || ''; // Fallback to empty string
-            bookContainer.appendChild(leftDiv);
-            bookContainer.appendChild(rightDiv);
-
-            // Show "Next Page" button and disable "Make Choice" button
-            nextPageBtn.style.display = 'block';
-            choiceBtn.style.display = 'block';
-            choiceBtn.disabled = true; // Disable the "Make Choice" button
-        } else {
-            // Generate choice boxes if the page has more than 2 texts
-            generateChoiceBoxes(2);  
-            document.getElementById('choice-1').innerText = page.texts[0];
-            document.getElementById('choice-2').innerText = page.texts[1];
-
-            // Show "Make Choice" button and hide "Next Page" button
-            nextPageBtn.style.display = 'none';
-            choiceBtn.style.display = 'block';
-            choiceBtn.disabled = false; // Enable the "Make Choice" button
-        }
+        generateChoiceBoxes(2);  // Regular pages have 2 choices (left and right)
+        document.getElementById('choice-1').innerText = page.texts[0];
+        document.getElementById('choice-2').innerText = page.texts[1];
     } else if (page instanceof DecisionPage) {
         const numChoices = page.pageTexts.length;
-        generateChoiceBoxes(numChoices);  
+        generateChoiceBoxes(numChoices);  // Dynamically generate choice boxes based on number of choices
 
+        // Display choices dynamically
         page.pageTexts.forEach((text, index) => {
             document.getElementById(`choice-${index + 1}`).innerText = text;
         });
@@ -758,11 +735,11 @@ function highlightChoice(choiceIndex) {
         box.classList.remove('highlight');
     });
     document.getElementById(`choice-${choiceIndex}`).classList.add('highlight');
-    choiceBtn.disabled = false; // Enable "Make Choice" button after a selection
 }
 
 let clickTimeout = null;
 const DOUBLE_CLICK_DELAY = 300; 
+
 
 choiceBtn.addEventListener('click', () => {
     if (currentPage instanceof DecisionPage) {
@@ -805,8 +782,6 @@ function makeChoice(choiceIndex) {
     currentPage = currentPage.nextPages[choiceIndex];  // Move to the selected page
     displayPage(currentPage);
     resetHighlights();
-
-    setBackground(choiceIndex);
 }
 
 // Display the initial page
